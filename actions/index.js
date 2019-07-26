@@ -1,11 +1,11 @@
-export const SET_DECK_LISTING = "SET_DECK_LISTING";
+export const SET_DECK_LIST = "SET_DECK_LIST";
 export const NEW_DECK = "NEW_DECK";
 export const DELETE_DECK = "DELETE_DECK";
 export const NEW_QUESTION_ANSWER = "NEW_QUESTION_ANSWER";
 
-export const setDeckListing = deckListing => ({
-  type: SET_DECK_LISTING,
-  deckListing
+export const setDeckList = deckList => ({
+  type: SET_DECK_LIST,
+  deckList
 });
 
 export const newDeck = title => ({

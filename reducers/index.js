@@ -1,5 +1,5 @@
 import {
-  SET_DECK_LISTING,
+  SET_DECK_LIST,
   NEW_DECK,
   DELETE_DECK,
   NEW_QUESTION_ANSWER
@@ -33,10 +33,10 @@ const defaultState = {
 
 function decks(state = defaultState, action) {
   switch (action.type) {
-    case SET_DECK_LISTING:
+    case SET_DECK_LIST:
       return {
         ...state,
-        ...action.deckListing
+        ...action.deckList
       };
 
     case NEW_DECK:
