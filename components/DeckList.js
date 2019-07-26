@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import { white } from "../utils/colors";
+import { white, gray } from "../utils/colors";
 import { AppLoading } from "expo";
-import { addEntry } from '../actions'
+import { setDeckList, newDeck } from "../actions";
+import { saveDeckList, fetchDeckList } from "../utils/api";
+import { defaultDeckList } from "../utils/defaultDeckList";
 
 class DeckList extends Component {
   state = {
@@ -11,54 +13,37 @@ class DeckList extends Component {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    fetchCalendarResults()
-      .then(entries => dispatch(receiveEntries(entries)))
-      .then(({ entries }) => {
-        if (!entries[timeToString()]) {
-          dispatch(
-            addEntry({
-              [timeToString()]: getDailyReminderValue()
-            })
+    fetchDeckList()
+      .then(deckList => {
+        if (JSON.stringify(deckList) === "{}") {
+          saveDeckList(defaultDeckList).then(newDeckList =>
+            this.props.dispatch(setDeckList(JSON.parse(newDeckList)))
           );
         }
+        this.props.dispatch(setDeckList(JSON.parse(deckList)));
       })
       .then(() => this.setState(() => ({ ready: true })));
   }
-  renderItem = ({ today, ...metrics }, formattedDate, key) => (
-    <View style={styles.item}>
-      {today ? (
-        <View>
-          <DateHeader date={formattedDate} />
-          <Text style={styles.noDataText}>{today}</Text>
-        </View>
-      ) : (
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate("EntryDetail", { entryId: key })
-          }
-        >
-          <MetricCard date={formattedDate} metrics={metrics} />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
 
   render() {
-    const { entries } = this.props;
-    const { ready } = this.state;
-
-    if (ready === false) {
+    if (this.state.ready === false) {
       return <AppLoading />;
     }
 
     return (
-      <UdaciFitnessCalendar
-        items={entries}
-        renderItem={this.renderItem}
-        renderEmptyDate={this.renderEmptyDate}
-      />
+      <View>
+        {Object.entries(this.props.deckList).map((deckTitle, deckInfo) => (
+          <TouchableOpacity onPress={() => this.props.navigation.navigate(
+            'Deck',
+            { deckTitle: deckTitle }
+          )}>
+            <Text style={{ fontSize: 20 }}>{deckTitle}</Text>
+            <Text style={{ fontSize: 16, color: gray }}>
+              {`${deckInfo.questions.length} cards`}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     );
   }
 }

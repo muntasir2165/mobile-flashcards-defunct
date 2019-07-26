@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
@@ -12,7 +12,6 @@ import AddQuestion from "./components/AddQuestion";
 import Deck from "./components/Deck";
 import DeckList from "./components/DeckList";
 import Quiz from "./components/Quiz";
-import { saveDeckList, fetchDeckList } from '../utils/api'
 
 function MobileFlashcardStatusBar({ backgroundColor, ...props }) {
   return (
@@ -97,7 +96,7 @@ const MainNavigator = StackNavigator({
   }
 });
 
-export default class App extends React.Component {
+export default class App extends Component {
   componentDidMount() {
     // setLocalNotification()
   }
