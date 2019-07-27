@@ -5,7 +5,7 @@ import {
   NEW_QUESTION_ANSWER
 } from "../actions";
 
-function decks(state = {}, action) {
+const decks = (state = {}, action) => {
   switch (action.type) {
     case SET_DECK_LIST:
       return {
@@ -41,4 +41,4 @@ function decks(state = {}, action) {
   }
 }
 
-export default entries;
+export default decks;

@@ -3,10 +3,14 @@ import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
-import { TabNavigator, StackNavigator } from "react-navigation";
+import {
+  createBottomTabNavigator,
+  createStackNavigator,
+  createAppContainer
+} from "react-navigation";
 import { purple, white } from "./utils/colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Constants } from "expo";
+// import Constants from "expo-constants";
 import AddDeck from "./components/AddDeck";
 import AddQuestion from "./components/AddQuestion";
 import Deck from "./components/Deck";
@@ -15,17 +19,18 @@ import Quiz from "./components/Quiz";
 
 function MobileFlashcardStatusBar({ backgroundColor, ...props }) {
   return (
-    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-    </View>
+    // <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+    //   <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    // </View>
+    null
   );
 }
 
-const Tabs = TabNavigator(
+const Tabs = createBottomTabNavigator(
   {
     DeckList: {
       screen: DeckList,
-      navigationOptions: {
+      defaultNavigationOptions: {
         tabBarLabel: "Decks",
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-bookmarks" size={30} color={tintColor} />
@@ -34,7 +39,7 @@ const Tabs = TabNavigator(
     },
     AddDeck: {
       screen: AddDeck,
-      navigationOptions: {
+      defaultNavigationOptions: {
         tabBarLabel: "Add Deck",
         tabBarIcon: ({ tintColor }) => (
           <FontAwesome name="plus-square" size={30} color={tintColor} />
@@ -43,7 +48,7 @@ const Tabs = TabNavigator(
     }
   },
   {
-    navigationOptions: {
+    defaultNavigationOptions: {
       header: null
     },
     tabBarOptions: {
@@ -63,13 +68,13 @@ const Tabs = TabNavigator(
   }
 );
 
-const MainNavigator = StackNavigator({
+const MainNavigator = createStackNavigator({
   Home: {
     screen: Tabs
   },
   Deck: {
     screen: Deck,
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerTintColor: white,
       headerStyle: {
         backgroundColor: purple
@@ -78,7 +83,7 @@ const MainNavigator = StackNavigator({
   },
   AddQuestion: {
     screen: AddQuestion,
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerTintColor: white,
       headerStyle: {
         backgroundColor: purple
@@ -87,7 +92,7 @@ const MainNavigator = StackNavigator({
   },
   Quiz: {
     screen: Quiz,
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerTintColor: white,
       headerStyle: {
         backgroundColor: purple
@@ -96,6 +101,7 @@ const MainNavigator = StackNavigator({
   }
 });
 
+const MainNavigatorAppContainer = createAppContainer(MainNavigator);
 export default class App extends Component {
   componentDidMount() {
     // setLocalNotification()
@@ -103,27 +109,27 @@ export default class App extends Component {
 
   render() {
     return (
-      // <View style={styles.container}>
-      //   <Text>Open up App.js to start working on your app!</Text>
-      // </View>
-      <Provider store={createStore(reducer)}>
-        <View style={{ flex: 1 }}>
-          <MobileFlashcardStatusBar
-            backgroundColor={purple}
-            barStyle="light-content"
-          />
-          <MainNavigator />
-        </View>
-      </Provider>
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+      </View>
+      // <Provider store={createStore(reducer)}>
+      //   <View style={{ flex: 1 }}>
+      //     {/* <MobileFlashcardStatusBar
+      //       backgroundColor={purple}
+      //       barStyle="light-content"
+      //     /> */}
+      //     <MainNavigatorAppContainer />
+      //   </View>
+      // </Provider>
     );
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

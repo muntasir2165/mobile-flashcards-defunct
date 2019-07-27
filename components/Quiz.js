@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { gray } from "../utils/colors";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
-export default class Quiz extends Component {
+class Quiz extends Component {
   render() {
     return (
       <View>
@@ -20,11 +20,11 @@ export default class Quiz extends Component {
 //   },
 // })
 
-const mapStateToProps =(deckList) => ({})
+const mapStateToProps = deckList => ({});
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
-)(Quiz)
+  mapDispatchToProps
+)(Quiz);
